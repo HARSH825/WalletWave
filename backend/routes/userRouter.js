@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
+//signup
 router.post('/signup', async (req, res) => {
     try {
         const body = req.body;
@@ -32,5 +33,9 @@ router.post('/signup', async (req, res) => {
         return res.status(500).json({ msg: error.message }); 
     }
 });
+
+// router.get('/signin',(req,res)=>{
+
+// })
 
 export default router;

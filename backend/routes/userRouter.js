@@ -1,6 +1,7 @@
 import express from 'express';
 import { signupSchema, updateSchema ,signInSchema} from '../validation/zod.js';
 import { User } from '../models/userSchema.js';
+import {Account} from '../models/accountSchema.js';
 import jwt, { sign } from 'jsonwebtoken';
 import { authMiddleware } from '../middlewares/authentication.js';
 
@@ -23,9 +24,21 @@ router.post('/signup', async (req, res) => {
             return res.status(409).json({ msg: "Username already taken" });
         }
 
-        const dbUser = await User.create(body);
-        const token = jwt.sign({ userId: dbUser._id }, process.env.JWT_SECRET);
+        const dbUser = await User.create({
+            username : req.body.username,
+            password : req.body.password,
+            firstName : req.body.firstName,
+            lastName : req.body.lastName
+        });
+        const userId = dbUser._id; 
 
+        await Account.create({                             //adding initial balance 
+            userId,
+            balance: 1+ Math.random()*10000
+        });
+
+        const token = jwt.sign({ userId: dbUser._id }, process.env.JWT_SECRET);
+        
         return res.status(201).json({ 
             msg: "User created successfully",
             token 
@@ -45,8 +58,8 @@ router.put('/update', authMiddleware, async (req, res) => {
             return res.status(400).json({ msg: "Invalid inputs" });
         }
 
-        const user = await User.updateOne(body, { id: req.userId });
-
+        const user = await User.updateOne({ _id: req.userId }, body);
+        
         return res.status(200).json({ msg: "User updated successfully", user });
     } catch (error) {
         console.error("Error updating user: ", error.message);

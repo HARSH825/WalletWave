@@ -17,7 +17,7 @@ const authMiddleware = (req,res,next)=>{
         const decoded = jwt.verify(token,process.env.JWT_SECRET);
 
         if(decoded.userId){
-            req.userId = decoded.userId; //add userid in the request .
+            req.userId = decoded.userId; //atach userId in the request .
             next();
         }
         else{

@@ -1,5 +1,5 @@
 import express from 'express';
-import { Account } from '../models/accountSchema';
+import { Account } from '../models/accountSchema.js';
 import {authMiddleware} from '../middlewares/authentication.js'
 const router = express.Router();
 import mongoose from 'mongoose';

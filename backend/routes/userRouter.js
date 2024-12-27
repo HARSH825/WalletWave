@@ -2,7 +2,7 @@ import express from 'express';
 import { signupSchema, updateSchema ,signInSchema} from '../validation/zod.js';
 import { User } from '../models/userSchema.js';
 import {Account} from '../models/accountSchema.js';
-import jwt, { sign } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { authMiddleware } from '../middlewares/authentication.js';
 
 const router = express.Router();
@@ -59,7 +59,7 @@ router.put('/update', authMiddleware, async (req, res) => {
         }
 
         const user = await User.updateOne({ _id: req.userId }, body);
-        
+
         return res.status(200).json({ msg: "User updated successfully", user });
     } catch (error) {
         console.error("Error updating user: ", error.message);

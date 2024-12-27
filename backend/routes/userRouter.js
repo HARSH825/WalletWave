@@ -7,7 +7,7 @@ import { authMiddleware } from '../middlewares/authentication.js';
 
 const router = express.Router();
 
-// Signup
+// Signup   ---> working 
 router.post('/signup', async (req, res) => {
     try {
         const body = req.body;
@@ -41,7 +41,7 @@ router.post('/signup', async (req, res) => {
         
         return res.status(201).json({ 
             msg: "User created successfully",
-            token 
+            token : "Bearer "+token
         });
     } catch (error) {
         return res.status(500).json({ msg: error.message }); 
@@ -107,7 +107,7 @@ router.post('/signin', async (req, res) => {
 
         return res.status(200).json({ 
             msg: "Login successful",
-            token 
+            token : "Bearer "+token
         });
     } catch (error) {
         console.error("Error during signin: ", error.message);
